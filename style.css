@@ -1,0 +1,21 @@
+#graphic-bar {
+  width: 400px;
+  height: 400px;
+  color: #005B8E;
+  border-left: 2px solid #005B8E;
+  border-bottom: 2px solid #005B8E;
+  display: table;
+}
+  #graphic-bar .bar {
+    width: 10%;
+    height: 100%;
+    padding: 0 7px;
+    display: table-cell;
+    vertical-align: bottom;
+  }
+  #graphic-bar .filling {
+    text-align: center;
+    background-color: #B3DDED;
+    box-shadow: -1px 0px 5px 1px rgba(0, 0, 0, 0.5),
+                -1px 0px 20px rgba(255, 255, 255, 0.5) inset;
+  }
