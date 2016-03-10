@@ -1,9 +1,11 @@
 (function() {
   /* Data */
   var nbValues = 10;
+  var sumValue = 0;
   var dataset = [];
   for (var i = 0; i < nbValues; i++) {
       var newNumber = Math.floor((Math.random() * 30) + 2);
+      sumValue += newNumber;
       dataset.push(newNumber);
   }
   var maxValue = Math.max(...dataset);
@@ -33,4 +35,34 @@
           .attr("text-anchor", "middle")
           .attr("x", function(d, i) { return i * width/nbValues + 0.5*width/nbValues; })
           .attr("y", height - 3);
+
+
+  /* circle graph */
+  var circleData = []; var nextStart = 0;
+  for (var i = 0; i < dataset.length; i++) {
+    var current = {
+      'value': dataset[i],
+      'start': nextStart,
+      'end': nextStart + (dataset[i]/sumValue)*(2*Math.PI)
+    }
+    circleData.push(current);
+    nextStart = current.end;
+  }
+
+  var r = Math.min(...[width, height]) / 2;
+  var cgSvg = d3.select("body").select("#circle-graph")
+                .attr("width", width)
+                .attr("height", height);
+  var cgGroup = cgSvg.append("g")
+                     .attr("transform", "translate("+ r +","+ r +")");
+  var cgArcs = cgGroup.selectAll("path")
+                      .data(circleData)
+                      .enter()
+                      .append("path");
+  cgArcs.attr("d", d3.svg.arc()
+                     .innerRadius(r-40)
+                     .outerRadius(r)
+                     .startAngle(function(d) { return d.start; })
+                     .endAngle(function(d) { return d.end; })
+       ).attr("fill", function(d,i) { return (i%2==0 ? "red" : "blue"); });
 })();
